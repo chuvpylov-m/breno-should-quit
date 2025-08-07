@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breno Should Have Quit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background-color: #121212;
+      color: #e0e0e0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .container {
+      background-color: #1e1e1e;
+      border: 2px solid #333;
+      padding: 3rem;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #f44336; /* red */
+      margin-bottom: 1.2rem;
+    }
+
+    .counter {
+      font-size: 4.5rem;
+      font-weight: bold;
+      color: #ff5252;
+      text-shadow: 0 0 10px #f44336;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    .subtext {
+      font-size: 1.2rem;
+      color: #999;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #777;
+      border-top: 1px solid #333;
+      padding-top: 1rem;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.05);
+        opacity: 0.8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Breno should have quit his job</h1>
+    <div class="counter" id="days">0</div>
+    <div class="subtext">days ago.</div>
+    <footer id="footer-quote"></footer>
+  </div>
+
+  <script>
+    const quitDate = new Date("2025-08-06"); // Change if needed
+
+    function calculateDaysAgo() {
+      const today = new Date();
+      const diffTime = today - quitDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays >= 0 ? diffDays : 0;
+    }
+
+    document.getElementById("days").textContent = calculateDaysAgo();
+
+    const messages = [
+      "Tomorrow will be worse, Breno.",
+      "Every day you stay, a puppy cries.",
+      "Freedom is just one resignation away.",
+      "Your chair misses the version of you that had hope.",
+      "Quit now. Regret never.",
+      "You weren’t meant to suffer like this.",
+      "Your talents are being held hostage.",
+      "This job is a dumpster fire. You are not the fireman.",
+      "Blink twice if you need help, Breno.",
+      "The only thing growing here is your stress level."
+    ];
+
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    document.getElementById("footer-quote").textContent = randomMessage;
+  </script>
+</body>
+</html>
