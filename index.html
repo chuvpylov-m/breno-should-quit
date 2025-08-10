@@ -6,71 +6,45 @@
   <title>Breno Should Have Quit</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Roboto Mono', monospace;
-      background-color: #121212;
-      color: #e0e0e0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
+      background-color: #121212; color: #e0e0e0;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
     }
-
     .container {
-      background-color: #1e1e1e;
-      border: 2px solid #333;
-      padding: 3rem;
-      max-width: 600px;
-      width: 100%;
+      background-color: #1e1e1e; border: 2px solid #333;
+      padding: 3rem; max-width: 680px; width: 100%;
     }
+    h1 { font-size: 2.2rem; font-weight: 700; color: #f44336; margin-bottom: 1.2rem; }
+    .counter { font-size: 4.5rem; font-weight: 700; color: #ff5252; text-shadow: 0 0 10px #f44336; animation: pulse 1.5s infinite alternate; }
+    .subtext { font-size: 1.2rem; color: #999; margin-top: 0.5rem; }
+    footer { margin-top: 2rem; font-size: 1rem; color: #777; border-top: 1px solid #333; padding-top: 1rem; }
 
-    h1 {
-      font-size: 2.2rem;
-      font-weight: bold;
-      color: #f44336; /* red */
-      margin-bottom: 1.2rem;
+    /* Ultimatum block */
+    .ultimatum {
+      margin-top: 2rem; text-align: left; background:#161616; border:1px solid #2a2a2a; padding: 1.2rem;
     }
+    .ultimatum h2 { font-size: 1.2rem; color:#e0e0e0; margin-bottom: .6rem; }
+    .row { display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap; }
+    .label { color:#aaa; font-size:.95rem; }
+    .big { font-size:2.2rem; font-weight:700; color:#e0e0e0; }
+    .danger { color:#ff5252; }
 
-    .counter {
-      font-size: 4.5rem;
-      font-weight: bold;
-      color: #ff5252;
-      text-shadow: 0 0 10px #f44336;
-      animation: pulse 1.5s infinite alternate;
-    }
+    .bar { margin-top:.8rem; width:100%; height:10px; background:#2a2a2a; overflow:hidden; }
+    .fill { height:100%; width:0%; background:#3fa34d; transition: width .4s ease; }
+    .fill.last2w { background:#ff5252; }
 
-    .subtext {
-      font-size: 1.2rem;
-      color: #999;
-      margin-top: 0.5rem;
+    .snitch {
+      display:none; margin-top:1rem; padding:.9rem; border:1px dashed #444; background:#141414; color:#bbb;
     }
+    .snitch a {
+      display:inline-block; margin-top:.6rem; padding:.6rem .9rem; border:1px solid #444; text-decoration:none; color:#eee;
+    }
+    .snitch a:hover { background:#222; }
 
-    footer {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: #777;
-      border-top: 1px solid #333;
-      padding-top: 1rem;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1.05);
-        opacity: 0.8;
-      }
-    }
+    @keyframes pulse { 0%{transform:scale(1);opacity:1;} 100%{transform:scale(1.05);opacity:.8;} }
   </style>
 </head>
 <body>
@@ -78,21 +52,38 @@
     <h1>Breno should have quit his job</h1>
     <div class="counter" id="days">0</div>
     <div class="subtext">days ago.</div>
+
+    <!-- Random footer message -->
     <footer id="footer-quote"></footer>
+
+    <!-- 200-Day Ultimatum -->
+    <div class="ultimatum" aria-live="polite">
+      <h2>🔻 200-Day Doomsday Counter</h2>
+      <div class="row">
+        <span class="label">Days left until the promise from <strong>Aug 7, 2025</strong> expires:</span>
+        <span id="promise-days" class="big">200</span>
+      </div>
+      <div class="bar"><div id="promise-fill" class="fill"></div></div>
+      <div id="snitch" class="snitch">
+        ⏰ Time’s up. Accountability protocol engaged.
+        <br>
+        <a id="snitch-link" href="#">Email Breno’s wife</a>
+        <div class="label">(<em>psst</em> replace the email address in the code if you haven’t yet)</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const quitDate = new Date("2025-08-06"); // Change if needed
-
-    function calculateDaysAgo() {
-      const today = new Date();
-      const diffTime = today - quitDate;
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    /* --- “days ago” counter --- */
+    const quitDate = new Date("2025-08-06");
+    function daysAgo(fromDate){
+      const msPerDay = 86400000;
+      const diffDays = Math.floor((new Date() - fromDate) / msPerDay);
       return diffDays >= 0 ? diffDays : 0;
     }
+    document.getElementById("days").textContent = daysAgo(quitDate);
 
-    document.getElementById("days").textContent = calculateDaysAgo();
-
+    /* --- Random footer message --- */
     const messages = [
       "Tomorrow will be worse, Breno.",
       "Every day you stay, a puppy cries.",
@@ -105,9 +96,54 @@
       "Look, if you had one shot, or one opportunity… would you capture it?",
       "The only thing growing here is your stress level."
     ];
+    document.getElementById("footer-quote").textContent =
+      messages[Math.floor(Math.random() * messages.length)];
 
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    document.getElementById("footer-quote").textContent = randomMessage;
+    /* --- 200-day ultimatum counter from Aug 7, 2025 --- */
+    const startDate = new Date("2025-08-07T00:00:00");
+    const totalDays = 200;
+    const msPerDay = 86400000;
+    const deadline = new Date(startDate.getTime() + totalDays * msPerDay);
+
+    function updateUltimatum(){
+      const now = new Date();
+      const rawLeft = (deadline - now) / msPerDay;
+      const daysLeft = Math.max(0, Math.ceil(rawLeft));
+      const progressed = Math.min(totalDays, Math.max(0, totalDays - daysLeft));
+      const pct = (progressed / totalDays) * 100;
+
+      const daysEl = document.getElementById("promise-days");
+      const fillEl = document.getElementById("promise-fill");
+      const snitchEl = document.getElementById("snitch");
+      const snitchLink = document.getElementById("snitch-link");
+
+      daysEl.textContent = daysLeft;
+      daysEl.classList.toggle("danger", daysLeft <= 14);
+      fillEl.style.width = pct + "%";
+      fillEl.classList.toggle("last2w", daysLeft <= 14);
+
+      if (daysLeft === 0) {
+        snitchEl.style.display = "block";
+        const wifeEmail = "wife@example.com"; // CHANGE THIS
+        const subject = encodeURIComponent("The 200-day pact has expired 😬");
+        const body = encodeURIComponent(
+`Hi,
+
+As agreed, Breno had 200 days from Aug 7, 2025 to leave his stress factory.
+The timer just hit zero today.
+
+If he needs a nudge, here’s the accountability site:
+${location.href}
+
+With care,
+The Accountability Department`
+        );
+        snitchLink.href = `mailto:${wifeEmail}?subject=${subject}&body=${body}`;
+      }
+    }
+
+    updateUltimatum();
+    setInterval(updateUltimatum, 60 * 60 * 1000);
   </script>
 </body>
 </html>
